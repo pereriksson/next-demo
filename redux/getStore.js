@@ -5,7 +5,8 @@ import {createWrapper} from "next-redux-wrapper";
 const makeStore = () => configureStore({
     reducer: {
         services: servicesSlice.reducer
-    }
+    },
+    devTools: true
 });
 
 export const wrapper = createWrapper(makeStore);

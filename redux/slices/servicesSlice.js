@@ -1,4 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {HYDRATE} from "next-redux-wrapper";
 
 export const fetchServices = createAsyncThunk(
     'fetchServices',
@@ -13,11 +14,23 @@ const servicesSlice = createSlice({
     initialState: {
         entities: []
     },
-    extraReducers: (builder) => {
-        builder.addCase(fetchServices.fulfilled, (state, action) => {
+    reducers: {
+        setServices: (state, action) => {
             state.entities = action.payload;
-        })
+        }
+    },
+    extraReducers: {
+            [HYDRATE]: (state, action) => {
+
+            if (!action.payload.services.entities) {
+                return state;
+            }
+
+            state.entities = action.payload.services.entities;
+        }
     }
 });
+
+export const { setServices } = servicesSlice.actions;
 
 export default servicesSlice;
